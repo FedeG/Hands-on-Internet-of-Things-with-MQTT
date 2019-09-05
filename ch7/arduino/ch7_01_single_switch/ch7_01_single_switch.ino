@@ -1,4 +1,4 @@
-int SWITCH_PIN = 0;
+int SWITCH_PIN = 2;
 
 void setup() {
   Serial.begin(115200);

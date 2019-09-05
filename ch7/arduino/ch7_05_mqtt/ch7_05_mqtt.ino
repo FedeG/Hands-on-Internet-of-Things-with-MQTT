@@ -19,10 +19,10 @@ int status = WL_IDLE_STATUS;
 WiFiClient net;
 MQTTClient client;
 
-int SWITCH_PIN1 = 0;
-int SWITCH_PIN2 = 1;
-int SWITCH_PIN3 = 2;
-int SWITCH_PIN4 = 3;
+int SWITCH_PIN1 = 2;
+int SWITCH_PIN2 = 0;
+int SWITCH_PIN3 = 4;
+int SWITCH_PIN4 = 5;
 int CHECK_MILLIS = 50;
 int CHECK_ITERATIONS = 15;
 
