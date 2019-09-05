@@ -3,7 +3,7 @@
  * to an Arduino MKR 1010 Wifi.
  * 
  * Depends on libraries:
- *   - WiFiNINA
+ *   - ESP8266WiFi
  *   - MQTT (by Joel Gaehwiler), there are multiple with a similar name, make sure to pick the right one
  * 
  * By default it uses the openly accessible login via username: "try" and password: "try".
