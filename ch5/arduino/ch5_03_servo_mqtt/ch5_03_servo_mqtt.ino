@@ -1,14 +1,21 @@
 #include <Servo.h>
-#include <WiFiNINA.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
 #include <MQTT.h>
 
-const char WIFI_SSID[] = "wifi name";
-const char WIFI_PASS[] = "wifi password";
+#ifndef STASSID
+#define WIFI_SSID "wifi name"
+#define WIFI_PASS  "wifi password"
+#endif
+
+ESP8266WiFiMulti WiFiMulti;
+
 const char mqttServer[] = "broker.shiftr.io";
 const int mqttServerPort = 1883;
 const char key[] = "try";
 const char secret[] = "try";
 const char device[] = "hellomqtt"; // broker device identifier
+
 Servo myservo;
 unsigned long lastTimeOpenend = 0;
 bool isOpen = false;
@@ -25,8 +32,9 @@ unsigned long lastMillis = 0;
 
 void connect() {
   Serial.print("checking wifi...");
-  while ( status != WL_CONNECTED) {
-    status = WiFi.begin(WIFI_SSID, WIFI_PASS);
+  WiFi.mode(WIFI_STA);
+  WiFiMulti.addAP(WIFI_SSID, WIFI_PASS);
+  while (WiFiMulti.run() != WL_CONNECTED) {
     Serial.print(".");
     delay(1000);
   }

@@ -10,11 +10,21 @@
  * You could easily replace these with your personal login credentials after signing up on shiftr.io.
  */
 
-#include <WiFiNINA.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
+
+#ifndef STASSID
+#define STASSID "wifi name"
+#define STAPSK  "wifi password"
+#endif
+
+const char* ssid     = STASSID;
+const char* password = STAPSK;
+
+ESP8266WiFiMulti WiFiMulti;
+
 #include <MQTT.h>
 
-const char WIFI_SSID[] = "name"; // set your network name here
-const char WIFI_PASSWORD[] = "password"; // set your network password here
 const char MQTT_SERVER[] = "broker.shiftr.io";
 const int MQTT_SERVER_PORT = 1883;
 const char MQTT_USERNAME[] = "try";
@@ -30,8 +40,9 @@ unsigned long lastMillis = 0;
 void connect() {
   // first connect to the wifi
   Serial.print("Checking wifi...");
-  while (status != WL_CONNECTED) {
-    status = WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  WiFi.mode(WIFI_STA);
+  WiFiMulti.addAP(ssid, password);
+  while (WiFiMulti.run() != WL_CONNECTED) {
     Serial.print(".");
     delay(1000);
   }

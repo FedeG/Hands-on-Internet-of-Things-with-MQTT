@@ -17,7 +17,8 @@
 #include <GxEPD2_BW.h>
 #include <GxEPD2_3C.h>
 #include <Fonts/FreeSansBold18pt7b.h>
-#include <WiFiNINA.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
 #include <MQTT.h>
 
 #define MAX_DISPAY_BUFFER_SIZE 15000ul
@@ -25,8 +26,13 @@
 #define MAX_HEIGHT_3C(EPD) (EPD::HEIGHT <= (MAX_DISPAY_BUFFER_SIZE / 2) / (EPD::WIDTH / 8) ? EPD::HEIGHT : (MAX_DISPAY_BUFFER_SIZE / 2) / (EPD::WIDTH / 8))
 GxEPD2_3C<GxEPD2_420c, MAX_HEIGHT_3C(GxEPD2_420c)> display(GxEPD2_420c(/*CS=4*/ 4, /*DC=*/ 7, /*RST=*/ 6, /*BUSY=*/ 5));
 
-const char WIFI_SSID[] = "name"; // set your network name here
-const char WIFI_PASSWORD[] = "password"; // set your network password here
+#ifndef STASSID
+#define WIFI_SSID "wifi name"
+#define WIFI_PASS  "wifi password"
+#endif
+
+ESP8266WiFiMulti WiFiMulti;
+
 const char MQTT_SERVER[] = "broker.shiftr.io";
 const int MQTT_SERVER_PORT = 1883;
 const char MQTT_USERNAME[] = "try";
@@ -91,8 +97,9 @@ void setText(String text) {
 void connect() {
   // first connect to the wifi
   Serial.print("Checking wifi...");
-  while (status != WL_CONNECTED) {
-    status = WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  WiFi.mode(WIFI_STA);
+  WiFiMulti.addAP(WIFI_SSID, WIFI_PASS);
+  while (WiFiMulti.run() != WL_CONNECTED) {
     Serial.print(".");
     delay(1000);
   }

@@ -1,8 +1,14 @@
-#include <WiFiNINA.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266WiFiMulti.h>
 #include <MQTT.h>
 
-const char WIFI_SSID[] = "hodor"; // set your network name here
-const char WIFI_PASSWORD[] = "07055517105068205046"; // set your network password here
+#ifndef STASSID
+#define WIFI_SSID "wifi name"
+#define WIFI_PASS  "wifi password"
+#endif
+
+ESP8266WiFiMulti WiFiMulti;
+
 const char MQTT_SERVER[] = "broker.shiftr.io";
 const int MQTT_SERVER_PORT = 1883;
 const char MQTT_USERNAME[] = "try";
@@ -131,8 +137,9 @@ void loop() {
 void connect() {
   // first connect to the wifi
   Serial.print("Checking wifi...");
-  while (status != WL_CONNECTED) {
-    status = WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  WiFi.mode(WIFI_STA);
+  WiFiMulti.addAP(WIFI_SSID, WIFI_PASS);
+  while (WiFiMulti.run() != WL_CONNECTED) {
     Serial.print(".");
     delay(1000);
   }
