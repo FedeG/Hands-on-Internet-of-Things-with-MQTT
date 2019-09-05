@@ -60,7 +60,7 @@ void messageReceived(String &topic, String &payload) {
 
 void setup() {
   Serial.begin(9600);
-  myservo.attach(9);
+  myservo.attach(5,650,2400);
   myservo.write(POSITION_CLOSED);
   connect();
 }

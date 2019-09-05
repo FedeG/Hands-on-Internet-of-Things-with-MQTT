@@ -7,7 +7,7 @@ int OPENING_TIME = 700;
 
 void setup() {
   Serial.begin(9600);
-  myservo.attach(9);
+  myservo.attach(5,650,2400);
 }
 
 void loop() {
